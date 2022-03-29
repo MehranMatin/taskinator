@@ -1,9 +1,16 @@
+var pageContentEl = document.querySelector("#page-content");
 var taskIdCounter = 0;
 var formEl = document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
+var deleteTask = function(taskId) {
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']")
+    taskSelected.remove();
+};
 
 var taskFormHandler = function(event) {
     event.preventDefault();
+
+    // assigns variables with the <form> input/select object's value properties
     var taskNameInput = document.querySelector("input[name='task-name']").value;
     console.dir(taskNameInput);
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
@@ -27,7 +34,7 @@ var taskFormHandler = function(event) {
     createTaskEl(taskDataObj);
 }
 
-// CREATE NEW TASK
+// NEW TASK function stored within a variable
 var createTaskEl = function(taskDataObj) {
     // Create list item
     var listItemEl = document.createElement("li");
@@ -59,7 +66,7 @@ var createTaskEl = function(taskDataObj) {
     taskIdCounter++;
 }
 
-// TASK ACTIONS function
+// TASK ACTIONS function stored in a variable
 var createTaskActions = function(taskId) {
     // creates div to hold buttons and dropdown
     var actionContainerEl = document.createElement("div");
@@ -100,3 +107,16 @@ var createTaskActions = function(taskId) {
 };
 
 formEl.addEventListener("submit", taskFormHandler);
+
+// ...
+var taskButtonHandler = function(event) {
+    console.log(event.target);
+
+    if (event.target.matches(".delete-btn")) {
+        // get the element's task id
+        var taskId = event.target.getAttribute("data-task-id");
+        deleteTask(taskId);
+    }
+};
+// event listener
+pageContentEl.addEventListener("click", taskButtonHandler);
